@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.aboutSection {
+  overflow-x: hidden;
+}
+
+.heroSection {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  position: relative;
+}
+
+.heroSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
+  background-size: cover;
+}
+
+.featureCard {
+  background-color: #ffffff;
+  border-radius: 15px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.featureCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.iconWrapper {
+  background-color: rgba(110, 142, 251, 0.1);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6e8efb;
+}
+
+.developerInfo {
+  background-color: #ffffff;
+}
+
+.developerImageContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.developerImage {
+  transition: transform 0.3s ease-in-out;
+}
+
+.developerInfo:hover .developerImage {
+  transform: scale(1.05);
+}
+
+.socialIcon {
+  color: #6e8efb;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.socialIcon:hover {
+  color: #a777e3;
+  transform: scale(1.1);
+}
+
+.btnLight {
+  color: #6e8efb;
+  font-weight: 600;
+}
+
+.btnLight:hover {
+  background-color: #f8f9fa;
+  color: #a777e3;
+}
+
+.display3, .display5, .display6 {
+  font-weight: 700;
+}
+
+.lead {
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .developerImageContainer {
+    height: 200px;
+  }
+
+  .developerImage {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
