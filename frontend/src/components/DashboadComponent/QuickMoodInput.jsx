@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -8,9 +14,10 @@ export function QuickMoodInput() {
   const [moodDescription, setMoodDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Handle form submission
   const handleSubmit = async () => {
-    if (!selectedMood && !moodDescription.trim()) {
-      alert("Please select a mood or enter a description.");
+    if (!selectedMood || !moodDescription.trim()) {
+      alert("Please select a mood and enter a description.");
       return;
     }
 
@@ -21,10 +28,11 @@ export function QuickMoodInput() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Adjust as per your auth mechanism
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming authToken is stored
         },
         body: JSON.stringify({
-          moodEntry: selectedMood || moodDescription,
+          emojiLabel: selectedMood, // Include the selected emoji as the label
+          moodEntry: moodDescription,
         }),
       });
 
@@ -53,6 +61,7 @@ export function QuickMoodInput() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Mood Selection Buttons */}
         <div className="grid grid-cols-3 gap-2">
           {["😊", "😐", "😔", "😡", "😴", "🤗"].map((emoji) => (
             <Button
@@ -68,16 +77,20 @@ export function QuickMoodInput() {
             </Button>
           ))}
         </div>
+
+        {/* Mood Description Input */}
         <div className="mt-4">
           <Input
             type="text"
-            placeholder="How you doing?"
+            placeholder="Describe your mood..."
             className="bg-white/10 border border-white/20 text-white placeholder-white/50 px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none w-full"
             value={moodDescription}
             onChange={(e) => setMoodDescription(e.target.value)}
             disabled={isSubmitting}
           />
         </div>
+
+        {/* Submit Button */}
         <div className="mt-4 text-right">
           <Button
             onClick={handleSubmit}

@@ -1,18 +1,50 @@
-import { Calendar } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
+import { Calendar } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const moodData = [
-  { date: "Mon", sentiment: 0.8, mood: "Happy" },
-  { date: "Tue", sentiment: 0.6, mood: "Content" },
-  { date: "Wed", sentiment: 0.4, mood: "Neutral" },
-  { date: "Thu", sentiment: 0.7, mood: "Excited" },
-  { date: "Fri", sentiment: 0.9, mood: "Joyful" },
-  { date: "Sat", sentiment: 0.5, mood: "Okay" },
-  { date: "Sun", sentiment: 0.8, mood: "Happy" },
-];
-
 export function RecentJournalEntries() {
+  const [moodData, setMoodData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch recent mood entries from the backend
+  const fetchRecentEntries = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/moods/recent", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Use token-based authentication
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch mood entries");
+      }
+
+      const result = await response.json();
+      setMoodData(result.data || []); // Assuming `result.data` contains the mood entries
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentEntries();
+  }, []);
+
   return (
     <Card className="bg-white/10 backdrop-blur-sm border-none text-white">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -27,20 +59,38 @@ export function RecentJournalEntries() {
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          {moodData.slice(-3).map((entry, i) => (
-            <div key={i} className="flex items-center justify-between">
-              <div>
-                <p className="font-medium">{entry.mood}</p>
-                <p className="text-sm text-white/70">{entry.date}</p>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error}</p>
+        ) : moodData.length > 0 ? (
+          <div className="space-y-2">
+            {moodData.map((entry, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between bg-white/5 p-3 rounded-lg"
+              >
+                <div className="flex items-center space-x-3">
+                  <span className="text-3xl">{entry.emojiLabel || "🙂"}</span> {/* Emoji label */}
+                  <div>
+                    <p className="font-medium">{entry.moodEntry}</p> {/* Mood description */}
+                    <p className="text-sm text-white/70">
+                      {new Date(entry.timestamp).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">
+                    {entry.sentimentScore ? entry.sentimentScore.toFixed(2) : "N/A"}
+                  </p>
+                  <p className="text-sm text-white/70">Sentiment Score</p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="font-medium">{entry.sentiment.toFixed(2)}</p>
-                <p className="text-sm text-white/70">Sentiment Score</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p>No recent entries found.</p>
+        )}
       </CardContent>
     </Card>
   );
