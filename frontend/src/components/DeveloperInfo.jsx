@@ -26,13 +26,13 @@ const DeveloperInfo = () => {
               My mission is to leverage technology to make a positive impact on people's lives and well-being.
             </p>
             <div className="d-flex">
-              <a href="https://github.com/johndoe" className={`me-3 ${styles.socialIcon}`} target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/rawal21" className={`me-3 ${styles.socialIcon}`} target="_blank" rel="noopener noreferrer">
                 <Github size={24} />
               </a>
-              <a href="https://linkedin.com/in/johndoe" className={`me-3 ${styles.socialIcon}`} target="_blank" rel="noopener noreferrer">
+              <a href="https://linkedin.com/in/dikshitRawal" className={`me-3 ${styles.socialIcon}`} target="_blank" rel="noopener noreferrer">
                 <Linkedin size={24} />
               </a>
-              <a href="mailto:john@mindsync.com" className={styles.socialIcon}>
+              <a href="dikshitrawal923@gmail.com" className={styles.socialIcon}>
                 <Mail size={24} />
               </a>
             </div>

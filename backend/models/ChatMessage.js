@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const chatMessageSchema = new mongoose.Schema({
   senderId: {
-    type: String, // Anonymous user identifier (can be a random string or token)
+    type: String,
     required: true,
   },
   message: {
@@ -15,7 +15,8 @@ const chatMessageSchema = new mongoose.Schema({
     default: Date.now,
   },
   chatGroupId: {
-    type: String, // Group/topic ID for categorizing chats
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatGroup',
     required: true,
   },
 });

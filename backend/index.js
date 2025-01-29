@@ -11,6 +11,9 @@ const wellnessRoutes = require("./routes/wellness");
 const chatRoutes = require('./routes/chat');
 const { filterMessage } = require('./utils/moderation');
 const cors = require("cors");
+const ChatGroup = require('./models/ChatGroup');
+
+const chatGroupRoutes = require('./routes/chatGroupRoutes');
 
 dotenv.config();
 
@@ -36,32 +39,37 @@ app.use("/api/auth", authRoutes);
 app.use("/api/moods", moodRoutes);
 app.use("/api/facial-expressions", facialExpressionRoutes);
 app.use("/api/routine", wellnessRoutes);
-app.use("/api/chat", chatRoutes);
+// app.use("/api/chat", chatRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/groups', chatGroupRoutes);
 
 // Socket.io Events
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
 
-  socket.on('joinRoom', (chatGroupId) => {
+const activeUsers = {};
+
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  socket.on('joinRoom', async (chatGroupId) => {
     socket.join(chatGroupId);
-    console.log(`User ${socket.id} joined room: ${chatGroupId}`);
+    activeUsers[chatGroupId] = (activeUsers[chatGroupId] || 0) + 1;
+
+    await ChatGroup.findByIdAndUpdate(chatGroupId, { activeMembers: activeUsers[chatGroupId] });
+
+    io.to(chatGroupId).emit('updateActiveMembers', { chatGroupId, count: activeUsers[chatGroupId] });
   });
 
-  socket.on('sendMessage', async (data) => {
-    const { senderId, message, chatGroupId } = data;
+  socket.on('leaveRoom', async (chatGroupId) => {
+    if (activeUsers[chatGroupId]) {
+      activeUsers[chatGroupId] = Math.max(0, activeUsers[chatGroupId] - 1);
+      await ChatGroup.findByIdAndUpdate(chatGroupId, { activeMembers: activeUsers[chatGroupId] });
 
-    // Filter offensive words
-    const filteredMessage = filterMessage(message);
-
-    // Save the message to the database
-    const newMessage = { senderId, message: filteredMessage, chatGroupId }; // Replace with DB logic if needed
-
-    // Broadcast the message to the chat room
-    io.to(chatGroupId).emit('newMessage', newMessage);
+      io.to(chatGroupId).emit('updateActiveMembers', { chatGroupId, count: activeUsers[chatGroupId] });
+    }
   });
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected:', socket.id);
+    console.log('User disconnected:', socket.id);
   });
 });
 
