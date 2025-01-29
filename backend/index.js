@@ -39,7 +39,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/moods", moodRoutes);
 app.use("/api/facial-expressions", facialExpressionRoutes);
 app.use("/api/routine", wellnessRoutes);
-// app.use("/api/chat", chatRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/groups', chatGroupRoutes);
 

@@ -3,13 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export function StatsCards() {
   const [stats, setStats] = useState({ averageMood: 0, totalEntries: 0 });
+  const [supportGroupCount, setSupportGroupCount] = useState(0);
 
   useEffect(() => {
     async function fetchStats() {
       try {
         const response = await fetch("http://localhost:3000/api/moods/stats", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming token-based auth
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
         });
 
@@ -24,7 +25,23 @@ export function StatsCards() {
       }
     }
 
+    async function fetchSupportGroups() {
+      try {
+        const response = await fetch("http://localhost:3000/api/groups");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch support groups");
+        }
+
+        const data = await response.json();
+        setSupportGroupCount(data.length); // Setting the count of support groups
+      } catch (error) {
+        console.error("Error fetching support groups:", error);
+      }
+    }
+
     fetchStats();
+    fetchSupportGroups();
   }, []);
 
   return (
@@ -49,15 +66,14 @@ export function StatsCards() {
           <p className="text-xs text-white/70">All-time count</p>
         </CardContent>
       </Card>
-      {/* Remaining cards are unchanged */}
       <Card className="bg-white/10 backdrop-blur-sm border-none text-white">
         <CardHeader>
           <CardTitle>Support Group</CardTitle>
           <CardDescription className="text-white/70">Active Members</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold">28</div>
-          <p className="text-xs text-white/70">3 new this week</p>
+          <div className="text-3xl font-bold">{supportGroupCount}</div>
+          <p className="text-xs text-white/70">{supportGroupCount > 0 ? "Active groups available" : "No active groups"}</p>
         </CardContent>
       </Card>
       <Card className="bg-white/10 backdrop-blur-sm border-none text-white">

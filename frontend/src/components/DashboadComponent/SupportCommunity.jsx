@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,11 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import axios from "axios";
 import { io } from "socket.io-client";
+import { JoinModal } from "./JoinModal";
 
 const socket = io("http://localhost:3000");
 
 export function SupportCommunity() {
   const [groups, setGroups] = useState([]);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   useEffect(() => {
     async function fetchGroups() {
@@ -24,7 +25,7 @@ export function SupportCommunity() {
     }
 
     fetchGroups();
-    
+
     socket.on("updateActiveMembers", (data) => {
       setGroups((prevGroups) =>
         prevGroups.map((group) =>
@@ -37,6 +38,17 @@ export function SupportCommunity() {
       socket.off("updateActiveMembers");
     };
   }, []);
+
+  const handleJoinClick = (group) => {
+    setSelectedGroup(group);
+    setShowJoinModal(true);
+  };
+
+  const handleJoinSubmit = (username) => {
+    const finalUsername = username.trim() || "Anonymous";
+    socket.emit("joinRoom", { groupId: selectedGroup._id, username: finalUsername });
+    setShowJoinModal(false);
+  };
 
   return (
     <Card className="bg-white/10 backdrop-blur-sm border-none text-white">
@@ -63,7 +75,7 @@ export function SupportCommunity() {
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={() => socket.emit("joinRoom", group._id)}
+                onClick={() => handleJoinClick(group)}
               >
                 Join
               </Button>
@@ -71,6 +83,9 @@ export function SupportCommunity() {
           ))}
         </div>
       </CardContent>
+      {showJoinModal && (
+        <JoinModal open={showJoinModal} onClose={() => setShowJoinModal(false)} onJoin={handleJoinSubmit} />
+      )}
     </Card>
   );
 }
