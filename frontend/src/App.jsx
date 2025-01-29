@@ -9,6 +9,9 @@ import Dashboard from './components/Dashboard';
 import AboutSection from './components/pages/AboutSection';
 import  Games  from './components/pages/Games';
 import MindfulnessPuzzle from './components/Games/MindfulnessPuzzle';
+import MemoryGame from './components/Games/MemoryGame';
+import BreathingGame from './components/Games/BreathingGame';
+import ColorTherapyGame from './components/Games/ColorTherapyGame';
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
           <Route path="/about" element={<AboutSection />} />
           <Route path="/games" element={<Games/>} />
           <Route path="/games/mindfulness-puzzels" element={<MindfulnessPuzzle/>} />
+          <Route path="/games/memory-game" element={<MemoryGame/>} />
+          <Route path='/games/breathing-rhythm-game' element={<BreathingGame/>} />
+          <Route path='/games/mood-quiz' element={<ColorTherapyGame/>} />
         </Routes>
       </div>
     </Router>

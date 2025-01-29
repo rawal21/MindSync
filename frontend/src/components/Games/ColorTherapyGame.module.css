@@ -1,0 +1,98 @@
+/* App Container */
+.appContainer {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f8ff;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  background-color: #ffb6c1;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.header h1 {
+  font-size: 2rem;
+}
+
+/* Footer */
+.footer, .footerBottom {
+  margin-top: 20px;
+  background-color: #ffb6c1;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.footer p, .footerBottom p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Game Container */
+.gameContainer {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.gameContainer h2 {
+  font-size: 1.8rem;
+}
+
+/* Color Picker */
+.colorPicker {
+  margin-bottom: 20px;
+}
+
+.colorPicker label {
+  font-size: 1.2rem;
+}
+
+/* Mandala */
+.mandala {
+  margin-top: 20px;
+}
+
+.mandala svg {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+/* Buttons */
+.controls button {
+  background-color: #ff5733;
+  padding: 15px 30px;
+  color: white;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+}
+
+.controls button:hover {
+  background-color: #ff7043;
+}
+
+/* Progress Tracker */
+.progressContainer {
+  margin-top: 20px;
+}
+
+.achievements ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.achievements li {
+  background-color: #f0f8ff;
+  padding: 5px 0;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin-top: 5px;
+}

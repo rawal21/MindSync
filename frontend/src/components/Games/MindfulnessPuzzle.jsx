@@ -2,20 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import calmingMusic from "@/assets/calming-music.mp3";
 import pieceClickSound from "@/assets/piece-click.mp3";
-import img1 from "../images/puzzle-3.jpeg"
-import img2 from "../images/3D render of a cute tropical fish in an aquarium on a dark blue background, digital art.webp"
-import img3 from "../images/An abstract oil painting of a river.webp"
-import img4 from "../images/image puzzle-1.webp"
+import img1 from "../images/puzzle-3.jpeg";
+import img2 from "../images/3D render of a cute tropical fish in an aquarium on a dark blue background, digital art.webp";
+import img3 from "../images/An abstract oil painting of a river.webp";
+import img4 from "../images/image puzzle-1.webp";
 
-const puzzleImages = [
- img1,
- img2,
- img3,
- img4
-];
+const puzzleImages = [img1, img2, img3, img4];
 
 const difficulties = {
-  Easy: 3, 
+  Easy: 3,
   Medium: 4,
   Hard: 5,
 };
@@ -41,10 +36,7 @@ export default function MindfulnessPuzzle() {
     setCompleted(false);
   };
 
-  const shuffleArray = (array) => {
-    const shuffled = array.sort(() => Math.random() - 0.5);
-    return shuffled;
-  };
+  const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
   const handlePieceClick = (index) => {
     const [row, col] = [Math.floor(index / gridSize), index % gridSize];
@@ -82,8 +74,16 @@ export default function MindfulnessPuzzle() {
     setImageIndex((prevIndex) => (prevIndex + 1) % puzzleImages.length);
   };
 
+  const completePuzzle = () => {
+    const totalPieces = gridSize ** 2;
+    const solvedPuzzle = Array.from({ length: totalPieces }, (_, i) => i);
+    setPuzzleState(solvedPuzzle);
+    setEmptyIndex(totalPieces - 1);
+    setCompleted(true);
+  };
+
   return (
-    <div className="min-h-screen p-4 flex flex-col items-center  ">
+    <div className="min-h-screen p-4 flex flex-col items-center bg-green-300">
       <audio src={calmingMusic} autoPlay loop />
       <h1 className="text-3xl font-bold mb-4">Mindfulness Puzzle</h1>
       <div className="flex gap-4 mb-4">
@@ -103,6 +103,7 @@ export default function MindfulnessPuzzle() {
         </select>
         <Button onClick={initializePuzzle}>Reset Puzzle</Button>
         <Button onClick={changeImage}>Change Image</Button>
+        <Button onClick={completePuzzle}>Complete Puzzle</Button>
       </div>
       <div
         className="grid gap-1"
@@ -116,7 +117,7 @@ export default function MindfulnessPuzzle() {
           <div
             key={index}
             className={`border ${
-              piece === gridSize ** 2 - 1 ? "bg-gray-300" : "bg-white"
+              piece === gridSize ** 2 - 1 ? "bg-white-300 text-gray-700" : ""
             }`}
             style={{
               width: "100%",
@@ -131,7 +132,9 @@ export default function MindfulnessPuzzle() {
               }% ${Math.floor(piece / gridSize) * (100 / (gridSize - 1))}%`,
             }}
             onClick={() => handlePieceClick(index)}
-          />
+          >
+            {piece === gridSize ** 2 - 1 && <span></span>}
+          </div>
         ))}
       </div>
       {completed && (

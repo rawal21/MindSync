@@ -19,16 +19,19 @@ export default function Games() {
       name: "Memory Game",
       description: "Improve focus and memory with this fun card-matching game.",
       image: "/memory-game.jpg", 
+      link: "/games/memory-game"
     },
     {
       name: "Breathing Rhythm Game",
       description: "Follow visual breathing patterns to relax and reduce stress.",
       image: "/breathing-rhythm.jpg", 
+      link: "/games/breathing-rhythm-game"
     },
     {
       name: "Mood Quiz",
       description: "Take a fun interactive quiz to boost your mood with positive traits and quotes.",
       image: "/mood-quiz.jpg", 
+      link: "/games/mood-quiz"
     },
   ];
 

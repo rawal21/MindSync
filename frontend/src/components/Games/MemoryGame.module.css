@@ -1,0 +1,62 @@
+.memoryGame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.cardMatched {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.cardFlipped {
+  transform: rotateY(180deg);
+}
+
+.cardContent {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.cardFront,
+.cardBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+}
+
+.cardFront {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid #4caf50;
+}
+
+.cardBack {
+  background: #4caf50;
+  transform: rotateY(180deg);
+}
