@@ -13,6 +13,7 @@ export function SupportCommunity() {
   const [groups, setGroups] = useState([]);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     async function fetchGroups() {
@@ -63,8 +64,8 @@ export function SupportCommunity() {
       </CardHeader>
       <CardContent>
         <div>
-          {groups.map((group) => (
-            <div key={group._id} className="flex items-center gap-4">
+          {(showAll ? groups : groups.slice(0, 5)).map((group) => (
+            <div key={group._id} className="flex items-center gap-4 py-2">
               <Avatar>
                 <AvatarFallback>{group.shortName}</AvatarFallback>
               </Avatar>
@@ -72,15 +73,16 @@ export function SupportCommunity() {
                 <p className="font-medium">{group.name}</p>
                 <p className="text-sm text-white/70">{group.activeMembers} members active</p>
               </div>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => handleJoinClick(group)}
-              >
+              <Button variant="secondary" size="sm" onClick={() => handleJoinClick(group)}>
                 Join
               </Button>
             </div>
           ))}
+          {groups.length > 5 && (
+            <Button variant="link" className="mt-2 text-white" onClick={() => setShowAll(!showAll)}>
+              {showAll ? "View Less" : "View All"}
+            </Button>
+          )}
         </div>
       </CardContent>
       {showJoinModal && (
