@@ -12,6 +12,7 @@ import MindfulnessPuzzle from './components/Games/MindfulnessPuzzle';
 import MemoryGame from './components/Games/MemoryGame';
 import BreathingGame from './components/Games/BreathingGame';
 import ColorTherapyGame from './components/Games/ColorTherapyGame';
+import ChatPage from "./components/pages/ChatPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/games/memory-game" element={<MemoryGame/>} />
           <Route path='/games/breathing-rhythm-game' element={<BreathingGame/>} />
           <Route path='/games/mood-quiz' element={<ColorTherapyGame/>} />
+          <Route path='/chat/:groupId'  element={<ChatPage/>} />
         </Routes>
       </div>
     </Router>

@@ -1,24 +1,26 @@
-const mongoose = require('mongoose');
+// ChatMessage model (backend)
 
+const mongoose = require('mongoose');
 const chatMessageSchema = new mongoose.Schema({
-  senderId: {
+  username: { // Changed from senderId
     type: String,
     required: true,
+    default: "Anonymous"
   },
   message: {
     type: String,
     required: true,
-    trim: true,
+    trim: true
   },
   timestamp: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   chatGroupId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ChatGroup',
-    required: true,
-  },
+    required: true
+  }
 });
 
 module.exports = mongoose.model('ChatMessage', chatMessageSchema);

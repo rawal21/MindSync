@@ -59,6 +59,8 @@ body {
 
 .developerImage {
   transition: transform 0.3s ease-in-out;
+  width: 100%;
+  height: auto;
 }
 
 .developerInfo:hover .developerImage {
@@ -95,12 +97,12 @@ body {
 
 @media (max-width: 768px) {
   .developerImageContainer {
-    height: 200px;
+    min-height: auto; /* Ensure it expands naturally */
   }
 
   .developerImage {
-    object-fit: cover;
-    height: 100%;
+    object-fit: contain; /* Keep the image visible without cropping */
     width: 100%;
+    height: auto;
   }
 }

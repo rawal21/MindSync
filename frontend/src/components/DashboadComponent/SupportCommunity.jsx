@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { JoinModal } from "./JoinModal";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:3000");
 
@@ -14,6 +15,8 @@ export function SupportCommunity() {
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [showAll, setShowAll] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchGroups() {
@@ -47,9 +50,26 @@ export function SupportCommunity() {
 
   const handleJoinSubmit = (username) => {
     const finalUsername = username.trim() || "Anonymous";
-    socket.emit("joinRoom", { groupId: selectedGroup._id, username: finalUsername });
+    
+    // Add callback for join confirmation
+    socket.emit("joinRoom", 
+      { 
+        groupId: selectedGroup._id, 
+        username: finalUsername 
+      }, 
+      (response) => {
+        if (response.success) {
+          navigate(`/chat/${selectedGroup._id}`, { 
+            state: { username: finalUsername } // Pass username to chat page
+          });
+        } else {
+          alert("Failed to join group: " + (response.error || "Unknown error"));
+        }
+      }
+    );
     setShowJoinModal(false);
   };
+
 
   return (
     <Card className="bg-white/10 backdrop-blur-sm border-none text-white">

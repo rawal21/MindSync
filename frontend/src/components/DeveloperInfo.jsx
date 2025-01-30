@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Image } from 'react-bootstrap';
 import { Github, Linkedin, Mail } from 'lucide-react';
-import img1 from "./images/developer.jpg";
+import img1 from "./images/dev1.jpg";
 import styles from "./pages/AboutSection.module.css"  // Import the existing AboutSection module CSS
 
 const DeveloperInfo = () => {
@@ -10,7 +10,7 @@ const DeveloperInfo = () => {
       <Row className="g-0">
         <Col md={4} className={styles.developerImageContainer}>
           <Image
-            src=""  // Set the image source to img1
+            src={img1}  // Set the image source to img1
             fluid
             className={styles.developerImage}
             alt="Developer"

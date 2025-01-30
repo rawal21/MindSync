@@ -12,7 +12,7 @@ const chatRoutes = require('./routes/chat');
 const { filterMessage } = require('./utils/moderation');
 const cors = require("cors");
 const ChatGroup = require('./models/ChatGroup');
-
+const ChatMessage = require('./models/ChatMessage');
 const chatGroupRoutes = require('./routes/chatGroupRoutes');
 
 dotenv.config();
@@ -42,33 +42,72 @@ app.use("/api/routine", wellnessRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/groups', chatGroupRoutes);
 
-// Socket.io Events
-
+// Socket config (backend)
 const activeUsers = {};
-
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
-  socket.on('joinRoom', async (chatGroupId) => {
-    socket.join(chatGroupId);
-    activeUsers[chatGroupId] = (activeUsers[chatGroupId] || 0) + 1;
+  // Store username and group ID for this socket connection
+  socket.on('joinRoom', async ({ groupId, username }, callback) => {
+    try {
+      // Join the room
+      socket.join(groupId);
+      
+      // Store username in socket data
+      socket.data.username = username || "Anonymous";
+      socket.data.groupId = groupId;
 
-    await ChatGroup.findByIdAndUpdate(chatGroupId, { activeMembers: activeUsers[chatGroupId] });
+      // Update active members count
+      activeUsers[groupId] = (activeUsers[groupId] || 0) + 1;
+      await ChatGroup.findByIdAndUpdate(groupId, { 
+        activeMembers: activeUsers[groupId] 
+      });
 
-    io.to(chatGroupId).emit('updateActiveMembers', { chatGroupId, count: activeUsers[chatGroupId] });
-  });
+      // Notify group about updated members
+      io.to(groupId).emit('updateActiveMembers', { 
+        chatGroupId: groupId, 
+        count: activeUsers[groupId] 
+      });
 
-  socket.on('leaveRoom', async (chatGroupId) => {
-    if (activeUsers[chatGroupId]) {
-      activeUsers[chatGroupId] = Math.max(0, activeUsers[chatGroupId] - 1);
-      await ChatGroup.findByIdAndUpdate(chatGroupId, { activeMembers: activeUsers[chatGroupId] });
-
-      io.to(chatGroupId).emit('updateActiveMembers', { chatGroupId, count: activeUsers[chatGroupId] });
+      // Send success confirmation to client
+      callback({ success: true });
+    } catch (error) {
+      callback({ success: false, error: "Failed to join group" });
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
+  // Socket config (backend)
+socket.on('sendMessage', async (messageData) => {
+  try {
+    // Save to database
+    const newMessage = new ChatMessage({
+      username: messageData.username,
+      message: messageData.message,
+      chatGroupId: messageData.chatGroupId,
+      // timestamp: messageData.timestamp
+    });
+    
+    await newMessage.save();
+    
+    // Broadcast to room
+    io.to(messageData.chatGroupId).emit('newMessage', newMessage);
+  } catch (error) {
+    console.error("Error saving message:", error);
+  }
+});
+
+  // Handle disconnections
+  socket.on('disconnect', async () => {
+    if (socket.data.groupId) {
+      activeUsers[socket.data.groupId] = Math.max(0, activeUsers[socket.data.groupId] - 1);
+      await ChatGroup.findByIdAndUpdate(socket.data.groupId, { 
+        activeMembers: activeUsers[socket.data.groupId] 
+      });
+      io.to(socket.data.groupId).emit('updateActiveMembers', { 
+        chatGroupId: socket.data.groupId, 
+        count: activeUsers[socket.data.groupId] 
+      });
+    }
   });
 });
 
