@@ -50,6 +50,7 @@ export function SupportCommunity() {
 
   const handleJoinSubmit = (username) => {
     const finalUsername = username.trim() || "Anonymous";
+    localStorage.setItem("selectedGroup", JSON.stringify(selectedGroup));
     
     // Add callback for join confirmation
     socket.emit("joinRoom", 
@@ -106,7 +107,7 @@ export function SupportCommunity() {
         </div>
       </CardContent>
       {showJoinModal && (
-        <JoinModal open={showJoinModal} onClose={() => setShowJoinModal(false)} onJoin={handleJoinSubmit} />
+        <JoinModal open={showJoinModal} onClose={() => setShowJoinModal(false)} onJoin={handleJoinSubmit}  />
       )}
     </Card>
   );

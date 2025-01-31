@@ -28,6 +28,10 @@ export function RecentJournalEntries() {
         },
       });
 
+      console.log("this is the respone" , response);
+
+
+
       if (!response.ok) {
         throw new Error("Failed to fetch mood entries");
       }

@@ -32,7 +32,7 @@ const registerUser = [
             await user.save();
 
             const token = generateToken(user._id);
-            res.status(201).json({ message: 'User created successfully', token });
+            res.status(201).json({ message: 'User created successfully', token ,  });
         } catch (err) {
             res.status(500).json({ message: 'Error creating user', error: err.message });
         }
@@ -69,7 +69,7 @@ const authUser = [
             }
 
             const token = generateToken(user._id);
-            res.json({ message: 'Logged in successfully', token });
+            res.json({ message: 'Logged in successfully', token  , user });
         } catch (err) {
             res.status(500).json({ message: 'Error logging in', error: err.message });
         }

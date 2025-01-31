@@ -29,6 +29,8 @@ const Login = () => {
       // If login is successful, store the JWT token
       const { token } = response.data;
       localStorage.setItem('authToken', token);  // Store the token in localStorage
+      localStorage.setItem("user" , JSON.stringify(response.data.user))
+      console.log("response is ", response.data)
 
       // Redirect to the dashboard
       navigate('/dashboard');

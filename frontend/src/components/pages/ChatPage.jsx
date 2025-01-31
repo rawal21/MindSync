@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:3000");
 
@@ -18,7 +19,10 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const username = state?.username || "Anonymous";
-
+ const navigate = useNavigate();
+ const storedGroup = localStorage.getItem('selectedGroup');
+ const group = storedGroup ? JSON.parse(storedGroup) : null;
+    console.log("this is the group details " , group);
   useEffect(() => {
     axios.get(`http://localhost:3000/api/chat/${groupId}`)
       .then(res => setMessages(res.data))
@@ -26,12 +30,16 @@ export default function ChatPage() {
 
     socket.on("newMessage", (message) => {
       setMessages(prev => [...prev, message]);
-    });
+    });  
+
+    
 
     return () => {
       socket.off("newMessage");
     };
   }, [groupId]);
+
+  
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -52,11 +60,11 @@ export default function ChatPage() {
     <div className="flex flex-col h-screen bg-gradient-to-br from-purple-400 to-purple-600">
       <div className="flex items-center p-4 bg-white/10 backdrop-blur-lg">
         <Link href="/" className="mr-4">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" onClick={()=>navigate("/dashboard")} >
             <ArrowLeft className="h-5 w-5 text-white" />
           </Button>
         </Link>
-        <h1 className="text-xl font-bold text-white">Support Community Chat</h1>
+        <h1 className="text-xl font-bold text-white">{group.name}</h1>
       </div>
 
       <ScrollArea className="flex-1 p-4">
