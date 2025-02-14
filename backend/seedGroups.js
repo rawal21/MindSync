@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const ChatGroup = require('./models/ChatGroup');
+const wellnessRoutes = require("./models/WellnessRoutine");
+const WellnessRoutine = require('./models/WellnessRoutine');
 require("dotenv").config()
 const MONGO_URL = process.env.MONGO_URL
 
@@ -26,6 +28,7 @@ const chatGroups = [
 async function seedDB() {
   try {
     await ChatGroup.deleteMany({}); // Clear existing data
+    await WellnessRoutine.deleteMany({});
     await ChatGroup.insertMany(chatGroups);
     console.log('Chat groups added successfully!');
     mongoose.connection.close();

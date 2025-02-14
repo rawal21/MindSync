@@ -24,29 +24,49 @@ export function QuickMoodInput() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/moods/add", {
+      const authToken = localStorage.getItem("authToken");
+
+      // Send mood data to /api/moods/add
+      const moodResponse = await fetch("http://localhost:3000/api/moods/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming authToken is stored
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify({
-          emojiLabel: selectedMood, // Include the selected emoji as the label
+          emojiLabel: selectedMood, 
           moodEntry: moodDescription,
         }),
       });
 
-      if (response.ok) {
-        alert("Mood entry submitted successfully!");
-        setSelectedMood("");
-        setMoodDescription("");
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
+      if (!moodResponse.ok) {
+        throw new Error("Failed to submit mood entry");
       }
+
+      // Send mood data to /wellness/routine
+      const wellnessResponse = await fetch("http://localhost:3000/api/routine", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          emotion: selectedMood, // Send emoji as emotion
+          recommendations: [], // You can modify based on mood
+          activityTime: new Date(),
+        }),
+      });
+
+      if (!wellnessResponse.ok) {
+        throw new Error("Failed to generate wellness routine");
+      }
+
+      alert("Mood entry and wellness routine submitted successfully!");
+      setSelectedMood("");
+      setMoodDescription("");
     } catch (error) {
-      console.error("Error submitting mood entry:", error);
-      alert("Failed to submit mood entry. Please try again.");
+      console.error("Error:", error);
+      alert("Failed to submit data. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

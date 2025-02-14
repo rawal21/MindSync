@@ -22,6 +22,11 @@ const WellnessRoutineSchema = new mongoose.Schema({
     enum: ['Completed', 'In Progress', 'Pending'],
     default: 'Pending',
   },
+  activityTime: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
   timestamp: {
     type: Date,
     default: Date.now,

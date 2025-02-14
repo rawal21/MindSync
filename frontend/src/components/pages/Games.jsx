@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 
 import { useNavigate } from "react-router-dom";
 import img1  from "../images/mindpuzzle.jpg"
+import img2 from  "../images/bg.jpeg";
 
 
 export default function Games() {
@@ -16,9 +17,9 @@ export default function Games() {
       link  : "/games/mindfulness-puzzels"
     },
     {
-      name: "Memory Game",
+      name: "SimSon's Says",
       description: "Improve focus and memory with this fun card-matching game.",
-      image: "/memory-game.jpg", 
+      image: img2,
       link: "/games/memory-game"
     },
     {

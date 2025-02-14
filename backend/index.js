@@ -32,7 +32,11 @@ const io = new Server(server, {
 // Middleware
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // Explicitly allow your frontend
+  credentials: true, // Allow cookies and authentication headers
+}));
 
 // Routes
 app.use("/api/auth", authRoutes);
