@@ -49,23 +49,23 @@ export function UpcomingActivities() {
       <CardContent>
         <div className="grid gap-4 md:grid-cols-3">
           {activities.length > 0 ? (
-            (showAll ? activities : activities.slice(0, 3)).map((activity, index) => (
-              <div key={index} className="flex items-center gap-4 rounded-lg bg-white/5 p-4">
-                <div className="h-12 w-12 rounded-lg bg-purple-400/20 flex items-center justify-center">
-                  🏋️
-                </div>
-                <div>
-                  <div className="font-medium">
-                    {activity.recommendations.map((rec, idx) => (
-                      <p key={idx}>{rec.name} - {rec.duration}</p>
-                    ))}
+            (showAll ? activities : activities.slice(0, 3)).flatMap((activity) => 
+              activity.recommendations.map((rec, idx) => (
+                <div key={`${activity.id}-${idx}`} className="flex items-center gap-4 rounded-lg bg-white/5 p-4">
+                  {/* <div className="h-12 w-12 rounded-lg bg-purple-400/20 flex items-center justify-center">
+                    
+                  </div> */}
+                  <div>
+                    <div className="font-medium">
+                      <p>{rec.name} - {rec.duration}</p>
+                    </div>
+                    <p className="text-sm text-white/70">
+                      {activity.activityTime ? new Date(activity.activityTime).toLocaleString() : "Scheduled Soon"}
+                    </p>
                   </div>
-                  <p className="text-sm text-white/70">
-                    {activity.activityTime ? new Date(activity.activityTime).toLocaleString() : "Scheduled Soon"}
-                  </p>
                 </div>
-              </div>
-            ))
+              ))
+            )
           ) : (
             <p className="text-center text-white/70">No upcoming activities.</p>
           )}

@@ -32,7 +32,7 @@ export default function MindfulnessPuzzle() {
     const pieces = Array.from({ length: totalPieces }, (_, i) => i);
     const shuffledPieces = shuffleArray(pieces);
     setPuzzleState(shuffledPieces);
-    setEmptyIndex(shuffledPieces.indexOf(totalPieces - 1)); // Set the last piece as the empty space
+    setEmptyIndex(shuffledPieces.indexOf(totalPieces - 1));
     setCompleted(false);
   };
 
@@ -59,7 +59,6 @@ export default function MindfulnessPuzzle() {
       setEmptyIndex(index);
       playSound(pieceClickSound);
 
-      // Check if the puzzle is completed
       if (isPuzzleSolved(newPuzzleState)) {
         setCompleted(true);
         alert("Congratulations! You solved the puzzle!");
@@ -85,63 +84,43 @@ export default function MindfulnessPuzzle() {
   return (
     <div className="min-h-screen p-4 flex flex-col items-center bg-green-300">
       <audio src={calmingMusic} autoPlay loop />
-      <h1 className="text-3xl font-bold mb-4">Mindfulness Puzzle</h1>
-      <div className="flex gap-4 mb-4">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">Mindfulness Puzzle</h1>
+      <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-4 w-full">
         <select
           value={difficulty}
           onChange={(e) => {
             setDifficulty(e.target.value);
             setGridSize(difficulties[e.target.value]);
           }}
-          className="px-4 py-2 rounded"
+          className="px-3 py-2 rounded text-sm sm:text-base"
         >
           {Object.keys(difficulties).map((level) => (
-            <option key={level} value={level}>
-              {level}
-            </option>
+            <option key={level} value={level}>{level}</option>
           ))}
         </select>
-        <Button onClick={initializePuzzle}>Reset Puzzle</Button>
+        <Button onClick={initializePuzzle}>Reset</Button>
         <Button onClick={changeImage}>Change Image</Button>
-        <Button onClick={completePuzzle}>Complete Puzzle</Button>
+        <Button onClick={completePuzzle}>Complete</Button>
       </div>
       <div
-        className="grid gap-1"
-        style={{
-          gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-          width: "80%",
-          maxWidth: "600px",
-        }}
+        className="grid gap-1 w-full max-w-[600px]"
+        style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}
       >
         {puzzleState.map((piece, index) => (
           <div
             key={index}
-            className={`border ${
-              piece === gridSize ** 2 - 1 ? "bg-white-300 text-gray-700" : ""
-            }`}
+            className={`border aspect-square ${piece === gridSize ** 2 - 1 ? "bg-white" : ""}`}
             style={{
-              width: "100%",
-              height: `${600 / gridSize}px`,
               backgroundImage:
-                piece !== gridSize ** 2 - 1
-                  ? `url(${puzzleImages[imageIndex]})`
-                  : "none",
+                piece !== gridSize ** 2 - 1 ? `url(${puzzleImages[imageIndex]})` : "none",
               backgroundSize: `${gridSize * 100}% ${gridSize * 100}%`,
-              backgroundPosition: `${
-                (piece % gridSize) * (100 / (gridSize - 1))
-              }% ${Math.floor(piece / gridSize) * (100 / (gridSize - 1))}%`,
+              backgroundPosition: `${(piece % gridSize) * (100 / (gridSize - 1))}% ${Math.floor(piece / gridSize) * (100 / (gridSize - 1))}%`,
             }}
             onClick={() => handlePieceClick(index)}
-          >
-            {piece === gridSize ** 2 - 1 && <span></span>}
-          </div>
+          />
         ))}
       </div>
-      {completed && (
-        <div className="text-lg font-bold text-green-500 mt-4">
-          Puzzle Completed!
-        </div>
-      )}
+      {completed && <div className="text-lg font-bold text-green-700 mt-4">Puzzle Completed!</div>}
     </div>
   );
 }

@@ -8,7 +8,7 @@ export function Achievements() {
         <CardDescription className="text-white/70">Progress & Milestones</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <div className="flex items-center gap-4">
             <div className="h-12 w-12 rounded-full bg-purple-400/20 flex items-center justify-center">
               🌟
@@ -33,7 +33,8 @@ export function Achievements() {
               <p className="text-xs text-white/70 mt-1">5/10 sessions completed</p>
             </div>
           </div>
-        </div>
+        </div> */}
+        <h3>under maintaince </h3>
       </CardContent>
     </Card>
   );

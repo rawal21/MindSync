@@ -1,5 +1,3 @@
-
-
 import { Header } from './DashboadComponent/Header'
 import { StatsCards } from './DashboadComponent/StatsCards'
 import { MoodChart } from './DashboadComponent/MoodChart'
@@ -9,6 +7,7 @@ import { QuickMoodInput } from './DashboadComponent/QuickMoodInput'
 import { DailyAffirmation } from './DashboadComponent/DailyAffirmation'
 import { Achievements } from './DashboadComponent/Achievements'
 import { UpcomingActivities } from './DashboadComponent/UpcomingActivities'
+
 
 
 export default function Dashboard() {
@@ -29,7 +28,7 @@ export default function Dashboard() {
         </div>
         <UpcomingActivities />
       </main>
+      
     </div>
   )
-}
-
+} 

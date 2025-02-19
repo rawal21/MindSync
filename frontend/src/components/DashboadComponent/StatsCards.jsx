@@ -82,8 +82,8 @@ export function StatsCards() {
           <CardDescription className="text-white/70">Scheduled</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold">2h</div>
-          <p className="text-xs text-white/70">Group meditation</p>
+          <div className="text-3xl font-bold">NO Session</div>
+          <p className="text-xs text-white/70"></p>
         </CardContent>
       </Card>
     </div>
