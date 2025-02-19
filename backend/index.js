@@ -14,6 +14,7 @@ const cors = require("cors");
 const ChatGroup = require('./models/ChatGroup');
 const ChatMessage = require('./models/ChatMessage');
 const chatGroupRoutes = require('./routes/chatGroupRoutes');
+const AiRoutes = require("./routes/AiTherepist");
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use("/api/facial-expressions", facialExpressionRoutes);
 app.use("/api/routine", wellnessRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/groups', chatGroupRoutes);
+app.use('/api/ai', AiRoutes);
 
 // Socket config (backend)
 const activeUsers = {};

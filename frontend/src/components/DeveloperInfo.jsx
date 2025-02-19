@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Image } from 'react-bootstrap';
 import { Github, Linkedin, Mail } from 'lucide-react';
-import img1 from "./images/dev1.jpg";
+import img1 from "./images/profile.jpg";
 import styles from "./pages/AboutSection.module.css"  // Import the existing AboutSection module CSS
 
 const DeveloperInfo = () => {

@@ -13,6 +13,7 @@ import MemoryGame from './components/Games/MemoryGame';
 import BreathingGame from './components/Games/BreathingGame';
 import ColorTherapyGame from './components/Games/ColorTherapyGame';
 import ChatPage from "./components/pages/ChatPage";
+import AITherapist from './components/AITherapist';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path='/games/breathing-rhythm-game' element={<BreathingGame/>} />
           <Route path='/games/mood-quiz' element={<ColorTherapyGame/>} />
           <Route path='/chat/:groupId'  element={<ChatPage/>} />
+          <Route path='/aitherepist'  element={<AITherapist/>} />
         </Routes>
       </div>
     </Router>
